@@ -24,6 +24,9 @@ lk_params = dict( winSize  = (15,15),
 # Create some random colors
 color = np.random.randint(0,255,(100,3))
 
+#create a window for render
+cv2.namedWindow('image', cv2.WINDOW_NORMAL)
+
 # Take first frame and find corners in it
 ret, old_frame = cap.read()
 print old_frame.shape
@@ -49,14 +52,11 @@ while(1):
     for i,(new,old) in enumerate(zip(good_new,good_old)):
         a,b = new.ravel()
         c,d = old.ravel()
-        mask = cv2.line(mask, (a,b),(c,d), color[i].tolist(), 2)
-        frame = cv2.circle(frame,(a,b),5,color[i].tolist(),-1)
-    #img = cv2.add(frame,mask)
-  
-    try: cv2.imshow('frame',frame)
-    except: 
-		print "Unexpected error:", sys.exc_info()[0]
-    k = cv2.waitKey(30) & 0xff
+        cv2.circle(frame,(a,b),5,color[i].tolist(),-1)
+        cv2.line(frame, (a,b),(c,d), color[i].tolist(), 2)
+    cv2.waitKey(50)
+    cv2.imshow('image',frame)
+    k = cv2.waitKey(50) & 0xff
     if k == 27:
         break
 
